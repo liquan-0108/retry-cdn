@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../build/retry-cdn.js"></script>
+    <script>
+      var urlArr = [
+        'https://cdnjs.cloudflare.com',
+        'https://images.unsplash.com',  // img图片正确的域名
+        'https://plus.unsplash.com', // 背景图正确的域名
+      ]
+      var retry = new RetryCDN(urlArr)
+    </script>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/index2.css">
+  </head>
+  <body>
+    <p>背景图cdn域名切换</p>
+    <div style="width: 200px;">
+      <div class="border box"></div>
+      <div class="border box2"></div>
+    </div>
+  </body>
+</html>

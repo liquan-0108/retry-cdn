@@ -1,0 +1,17 @@
+img{
+    width: 100%;
+}
+.border{
+    border: 6px solid red;
+    width: 100px;
+    height: 100px;
+}
+
+.box2{
+
+    background: url(https://00.unsplash/premium_photo-1673278171340-99b4dbf0418f) no-repeat center 100%/100%;
+}
+.box3{
+
+    background: url(https://00.unsplash/premium_photo-1673603988195-1253725273e8) no-repeat center 100%/100%;
+}

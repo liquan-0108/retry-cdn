@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../build/retry-cdn.js"></script>
+    <script>
+      var urlArr = [
+        'https://cdnjs.cloudflare.com',
+        'https://images.unsplash.com',  // img图片正确的域名
+        'https://plus.unsplash.com', // 背景图正确的域名
+      ]
+      var retry = new RetryCDN(urlArr)
+    </script>
+    <!-- script标签cdn域名切换 -->
+    <script async src="https://iiiii/ajax/libs/element-plus/2.6.1/index.full.min.js"></script>
+    <script defer src="https://jjjjj/ajax/libs/axios/1.6.8/axios.min.js"></script>
+    <script>
+      console.log('1111');
+    </script>
+    <script src="./js/a.js"></script>
+    <script src="https://xxxx/ajax/libs/vue/3.4.21/vue.global.min.js"></script>
+    <script src="https://yyyyy/ajax/libs/vuex/4.1.0/vuex.global.js"></script>
+    <script src="https://zzzzzz/ajax/libs/vue-router/4.3.0/vue-router.global.min.js"></script>
+    <script>
+      console.log('22222');
+    </script>
+    <script src="./js/b.js"></script>
+  </head>
+  <body>
+    <p>Script标签cdn域名切换</p>
+  </body>
+</html>
