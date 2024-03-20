@@ -128,7 +128,6 @@ export default class RetryCDN {
                     const element = CSSStyleSheet.rules[index];
                     // 获取背景url
                     const bgUrl = Util.getBgUrl(element.style.backgroundImage)
-                    debugger
                     if (!bgUrl) continue 
                     // 存储CSSStyleSheet 和 背景出错的css选择器，用来之后替换背景
                     if (this.cantUseBgimg.has(CSSStyleSheet)) {
