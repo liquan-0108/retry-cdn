@@ -121,7 +121,7 @@ export default class RetryCDN {
     getAllStyleSheets() {
         var arrSheet = Array.from(document.styleSheets)
         arrSheet.forEach((CSSStyleSheet)=>{
-            if(this.hasRule(CSSStyleSheet) === null) return
+            if(this.hasRule(CSSStyleSheet)) return
             try {
                 // 遍历获取css背景图，并尝试访问是否成功
                 for (let index = 0; index < CSSStyleSheet.rules.length; index++) {
@@ -189,12 +189,14 @@ export default class RetryCDN {
     */
     hasRule(styleSheets) {
         try {
-           return styleSheets.rules
+           styleSheets.rules = styleSheets.rules ?  styleSheets.rules : styleSheets.cssRules;
+           return true;
         } catch (error) {
             try {
-                return styleSheets.cssRules
+                styleSheets.rules = styleSheets.cssRules;
+                return true;
             } catch (error) {
-                return null
+                return null;
             }
         }
     }
