@@ -136,3 +136,17 @@ describe('test create tags', () => {
         expect(linkElement).toBeTruthy();
     });
 });
+
+describe('test isAbsolutePath', () => {
+    it('should true', () => {
+        const path = 'https://cdnjs.cloudflare.com/ajax/libs/element-plus/2.6.1/index.min.css'
+        const result = Util.isAbsolutePath(path)
+        expect(result).toBeTruthy()
+    });
+
+    it('should false', () => {
+        const path = '../ajax/libs/element-plus/2.6.1/index.min.css'
+        const result = Util.isAbsolutePath(path)
+        expect(result).toBeFalsy()
+    });
+});
