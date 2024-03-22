@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">49.46% </span>
+                <span class="strong">48.38% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>46/93</span>
+                <span class='fraction'>45/93</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>22/50</span>
+                <span class='fraction'>18/48</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.48% </span>
+                <span class="strong">52.32% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>46/86</span>
+                <span class='fraction'>45/86</span>
             </div>
         
             
@@ -278,8 +278,7 @@
 <a name='L213'></a><a href='#L213'>213</a>
 <a name='L214'></a><a href='#L214'>214</a>
 <a name='L215'></a><a href='#L215'>215</a>
-<a name='L216'></a><a href='#L216'>216</a>
-<a name='L217'></a><a href='#L217'>217</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L216'></a><a href='#L216'>216</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -292,6 +291,11 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -301,16 +305,17 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -384,12 +389,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -471,11 +471,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -512,22 +510,28 @@ export default class RetryCDN {
      *  自动尝试img 和 script
     */
     init() {
+        const tagToFunction = {
+            'SCRIPT': this.retryJsSrc.bind(this),
+            'IMG': this.retryImgSrc.bind(this),
+            'LINK': this.retryLinkSrc.bind(this)
+        };
         window.addEventListener('error', <span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
-            const target = <span class="cstat-no" title="statement not covered" >error.target;</span>
-<span class="cstat-no" title="statement not covered" >            if(target.tagName === 'SCRIPT'){</span>
-<span class="cstat-no" title="statement not covered" >                this.retryJsSrc(target)</span>
-            }else <span class="cstat-no" title="statement not covered" >if(target.tagName === 'IMG'){</span>
-                // 给当前报错图片切换cdn
-<span class="cstat-no" title="statement not covered" >                this.retryImgSrc(target);</span>
-            }else <span class="cstat-no" title="statement not covered" >if(target.tagName === 'LINK'){</span>
-<span class="cstat-no" title="statement not covered" >                this.retryLinkSrc(target);</span>
+<span class="cstat-no" title="statement not covered" >            try {</span>
+                const target = <span class="cstat-no" title="statement not covered" >error.target;</span>
+                const tagName = <span class="cstat-no" title="statement not covered" >target.tagName;</span>
+                const retryFunction = <span class="cstat-no" title="statement not covered" >tagToFunction[tagName];</span>
+<span class="cstat-no" title="statement not covered" >                if (retryFunction &amp;&amp; Util.isAbsolutePath(target.src || target.href)) {</span>
+<span class="cstat-no" title="statement not covered" >                    retryFunction(target);</span>
+                }
+            } catch (error) {
+<span class="cstat-no" title="statement not covered" >                console.log('error',error);</span>
             }
         },true);
         // 自动尝试css背景域名
-        // window.addEventListener('DOMContentLoaded', (error) =&gt; {
-        //     this.getAllStyleSheets()
-        //     this.setStyle()
-        // })
+        window.addEventListener('DOMContentLoaded', <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >            this.getAllStyleSheets()</span>
+<span class="cstat-no" title="statement not covered" >            this.setStyle()</span>
+        })
     }
 &nbsp;
     /**
@@ -536,21 +540,21 @@ export default class RetryCDN {
      * 
     */
     retryJsSrc (target){
-        const oldUrl = new URL(target.src);
+        const { pathname, search } = Util.parseUrl(target.src);
         if(target.defer || target.async){
-            const { state , num } = this.setErrorMap(this.scriptAsyncError,oldUrl.pathname)
+            const { state , num } = this.setErrorMap(this.scriptAsyncError,pathname)
             <span class="missing-if-branch" title="if path not taken" >I</span>if(!state) {
 <span class="cstat-no" title="statement not covered" >                return</span>
             };
-            const newUrl = `${ this.domainArr[num-1] }${ oldUrl.pathname }${ oldUrl.search ? <span class="branch-0 cbranch-no" title="branch not covered" >oldUrl.search </span>: '' }`;
+            const newUrl = `${ this.domainArr[num-1] }${ pathname }${ search ? <span class="branch-0 cbranch-no" title="branch not covered" >search </span>: '' }`;
             Util.createScript(newUrl,target.defer,target.async)
         }else{
-            const { state , num } = this.setErrorMap(this.scriptError,oldUrl.pathname);
+            const { state , num } = this.setErrorMap(this.scriptError,pathname);
             // 缓存正常的cdn
             <span class="missing-if-branch" title="if path not taken" >I</span>if(!state) {
 <span class="cstat-no" title="statement not covered" >                return</span>
             };
-            const newUrl = `${ this.domainArr[num-1] }${ oldUrl.pathname }${ oldUrl.search ? <span class="branch-0 cbranch-no" title="branch not covered" >oldUrl.search </span>: '' }`;
+            const newUrl = `${ this.domainArr[num-1] }${ pathname }${ search ? <span class="branch-0 cbranch-no" title="branch not covered" >search </span>: '' }`;
             document.write(`&lt;script src="${newUrl}"&gt;&lt;/script&gt;`);
         }
     }
@@ -561,12 +565,12 @@ export default class RetryCDN {
      * 
     */
     retryLinkSrc (target){
-        const oldUrl = new URL(target.href);
-        const { state , num } = this.setErrorMap(this.linkError,oldUrl.pathname)
+        const { pathname, search } = Util.parseUrl(target.href);
+        const { state , num } = this.setErrorMap(this.linkError,pathname)
         <span class="missing-if-branch" title="if path not taken" >I</span>if(!state) {
 <span class="cstat-no" title="statement not covered" >            return</span>
         };
-        const newUrl = `${ this.domainArr[num-1] }${ oldUrl.pathname }${ oldUrl.search ? <span class="branch-0 cbranch-no" title="branch not covered" >oldUrl.search </span>: '' }`;
+        const newUrl = `${ this.domainArr[num-1] }${ pathname }${ search ? <span class="branch-0 cbranch-no" title="branch not covered" >search </span>: '' }`;
         Util.createLink(newUrl)
     }
 &nbsp;
@@ -579,8 +583,8 @@ export default class RetryCDN {
         const { state , num } = this.setErrorMap(this.imgError,target);
         <span class="missing-if-branch" title="if path not taken" >I</span>if(!state) <span class="cstat-no" title="statement not covered" >return;</span>
         // 拼接新url,并重试
-        const oldSrc = new URL(target.src);
-        const newUrl = `${ this.domainArr[num-1]}${oldSrc.pathname}${oldSrc.search?<span class="branch-0 cbranch-no" title="branch not covered" >oldSrc.search:</span>'' }`;
+        const { pathname, search } = Util.parseUrl(target.src);
+        const newUrl = `${ this.domainArr[num-1]}${ pathname }${ search ? <span class="branch-0 cbranch-no" title="branch not covered" >search </span>: '' }`;
         target.src = newUrl;
     }
 &nbsp;
@@ -592,7 +596,7 @@ export default class RetryCDN {
      * **/
     setErrorMap(errorMap,target) {
         // 获取重试次数  
-        var num = errorMap.get(target) || 1;
+        var num = errorMap.get(target) || 0;
         // 重试次数是否大于备选cdn域名的个数，大于则说明重试完毕，都挂了，不在进行重试
         if(num &gt;= this.domainArr.length){
             return {
@@ -600,12 +604,7 @@ export default class RetryCDN {
                 num
             };
         } 
-        // 是否已经存在，若存在则重试次数 + 1，否则则存入map
-        if(errorMap.has(target)){
-            errorMap.set(target,++num);
-        }else{
-            errorMap.set(target,num);
-        }
+        errorMap.set(target,++num);
         return {
             state: true,
             num
@@ -617,15 +616,15 @@ export default class RetryCDN {
     */
 <span class="fstat-no" title="function not covered" >    ge</span>tAllStyleSheets() {
         var arrSheet = <span class="cstat-no" title="statement not covered" >Array.from(document.styleSheets)</span>
-<span class="cstat-no" title="statement not covered" >        arrSheet.forEach(<span class="fstat-no" title="function not covered" >(C</span>SSStyleSheet)=&gt;{</span>
-<span class="cstat-no" title="statement not covered" >            if(this.hasRule(CSSStyleSheet)) <span class="cstat-no" title="statement not covered" >return</span></span>
+<span class="cstat-no" title="statement not covered" >        for (const CSSStyleSheet of arrSheet) {</span>
+<span class="cstat-no" title="statement not covered" >            if(!this.hasRule(CSSStyleSheet)) <span class="cstat-no" title="statement not covered" >continue;</span></span>
 <span class="cstat-no" title="statement not covered" >            try {</span>
                 // 遍历获取css背景图，并尝试访问是否成功
 <span class="cstat-no" title="statement not covered" >                for (let index = <span class="cstat-no" title="statement not covered" >0;</span> index &lt; CSSStyleSheet.rules.length; index++) {</span>
                     const element = <span class="cstat-no" title="statement not covered" >CSSStyleSheet.rules[index];</span>
                     // 获取背景url
                     const bgUrl = <span class="cstat-no" title="statement not covered" >Util.getBgUrl(element.style.backgroundImage)</span>
-<span class="cstat-no" title="statement not covered" >                    if (!bgUrl) <span class="cstat-no" title="statement not covered" >continue </span></span>
+<span class="cstat-no" title="statement not covered" >                    if (!bgUrl || !Util.isAbsolutePath(bgUrl)) <span class="cstat-no" title="statement not covered" >continue </span></span>
                     // 存储CSSStyleSheet 和 背景出错的css选择器，用来之后替换背景
 <span class="cstat-no" title="statement not covered" >                    if (this.cantUseBgimg.has(CSSStyleSheet)) {</span>
                         const CSSStyleSheetValue = <span class="cstat-no" title="statement not covered" >this.cantUseBgimg.get(CSSStyleSheet)</span>
@@ -645,7 +644,7 @@ export default class RetryCDN {
             } catch (error) {
 <span class="cstat-no" title="statement not covered" >                console.log(error);</span>
             }
-        })
+        }
     }
     /**
      * 添加样式
@@ -665,12 +664,12 @@ export default class RetryCDN {
             // 获取第一个背景图的全部备用CDN链接，并尝试访问，拿到正常的domain
             const urlArr = <span class="cstat-no" title="statement not covered" >this.getAllUrlArr(bgUrl)</span>
             const result = <span class="cstat-no" title="statement not covered" >await Util.getOneSuccUrl(urlArr)</span>
-            const {origin : succDomain } = <span class="cstat-no" title="statement not covered" >new URL(result);</span>
+            const { origin : succDomain } = <span class="cstat-no" title="statement not covered" >Util.parseUrl(result);</span>
             // 遍历所有的CSSStyleSheet，并将异常的背景图域名替换成可以正常放访问的domain
 <span class="cstat-no" title="statement not covered" >            this.cantUseBgimg.forEach(<span class="fstat-no" title="function not covered" >(s</span>electArr, CSSStyleSheet) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >                selectArr.forEach(<span class="fstat-no" title="function not covered" >(s</span>electObj) =&gt; {</span>
-                    const {pathname , search} = <span class="cstat-no" title="statement not covered" >new URL(selectObj.bgUrl);</span>
-                    const bgUrlDomain = <span class="cstat-no" title="statement not covered" >`${succDomain}${pathname}${search ? search : '' }`;</span>
+                    const { pathname , search } = <span class="cstat-no" title="statement not covered" >Util.parseUrl(selectObj.bgUrl);</span>
+                    const bgUrlDomain = <span class="cstat-no" title="statement not covered" >`${ succDomain }${ pathname }${ search ? search : '' }`;</span>
 <span class="cstat-no" title="statement not covered" >                    CSSStyleSheet.insertRule(`${selectObj.selectorText} { background-image: url(${bgUrlDomain}) !important; }`, CSSStyleSheet.rules.length);</span>
                 })
             })
@@ -686,12 +685,10 @@ export default class RetryCDN {
     */
     hasRule(styleSheets) {
         try {
-           styleSheets.rules = styleSheets.rules ?  styleSheets.rules : styleSheets.cssRules;
-           return true;
+           return styleSheets.rules;
         } catch (error) {
             try {
-                styleSheets.rules = styleSheets.cssRules;
-<span class="cstat-no" title="statement not covered" >                return true;</span>
+                return styleSheets.cssRules;
             } catch (error) {
                 return null;
             }
@@ -704,7 +701,7 @@ export default class RetryCDN {
      * 
     */
     getAllUrlArr(bgUrl) {
-        const { pathname, search } = new URL(bgUrl);
+        const { pathname, search } = Util.parseUrl(bgUrl);
         var urlArr =  this.domainArr.map((domain)=&gt;{
             return  `${domain}${pathname}${search ? <span class="branch-0 cbranch-no" title="branch not covered" >search </span>: '' }`
         })
@@ -718,7 +715,7 @@ export default class RetryCDN {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-21T09:52:50.140Z
+                at 2024-03-22T08:45:51.786Z
             </div>
         <script src="prettify.js"></script>
         <script>

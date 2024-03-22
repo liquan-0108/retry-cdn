@@ -150,3 +150,36 @@ describe('test isAbsolutePath', () => {
         expect(result).toBeFalsy()
     });
 });
+describe('test parseUrl', () => {
+    it('http url', () => {
+        const path = 'https://cdnjs.cloudflare.com/ajax/libs/element-plus/2.6.1/index.min.css?param=1&param=2'
+        const expectResult = {
+            "protocol": "https",
+            "hostname": "cdnjs.cloudflare.com",
+            "pathname": "/ajax/libs/element-plus/2.6.1/index.min.css",
+            "search": "?param=1&param=2",
+            "hash": null,
+            "origin": "https://cdnjs.cloudflare.com"
+        }
+        const result = Util.parseUrl(path)
+        expect(result).toEqual(expectResult)
+    });
+
+    it('no protocol url', () => {
+        const path = '//cdnjs.cloudflare.com/ajax/libs/element-plus/2.6.1/index.min.css?param=1&param=2'
+        const expectResult = {
+            "protocol": "",
+            "hostname": "cdnjs.cloudflare.com",
+            "pathname": "/ajax/libs/element-plus/2.6.1/index.min.css",
+            "search": "?param=1&param=2",
+            "hash": null,
+            "origin": "//cdnjs.cloudflare.com"
+        }
+        const result = Util.parseUrl(path)
+        expect(result).toEqual(expectResult)
+    });
+    it('throw error', () => {
+        const path = null
+        expect(() => Util.parseUrl(path)).toThrow('Invalid URL');
+    });
+});

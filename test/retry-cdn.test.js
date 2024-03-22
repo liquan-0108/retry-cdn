@@ -3,17 +3,28 @@ import Util from "../src/utils";
 
 // mock 依赖的工具库
 jest.mock('../src/utils', () => ({
-    createScript: jest.fn(),
-    createLink: jest.fn(),
     getBgUrl: jest.fn(),
     checkValidity: jest.fn(),
-    getOneSuccUrl: jest.fn()
+    getOneSuccUrl: jest.fn(),
+    createScript: jest.fn(),
+    createLink: jest.fn(),
+    isAbsolutePath: jest.fn(),
+    parseUrl:jest.fn(),
 }));
 
 describe('test retryJsSrc state true', () => {
     let retryCDN;
     const resultUrl = 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js'
     beforeEach(()=>{
+        Util.parseUrl.mockReturnValue({
+            protocol: "https",
+            hostname: "cdnjs.cloudflare.com",
+            pathname: '/ajax/libs/axios/1.6.8/axios.min.js',
+            search: null,
+            hash: null,
+            origin: "https://cdnjs.cloudflare.com"
+        });
+
         retryCDN = new RetryCDN([
             'https://cdnjs.cloudflare.com',
             'https://images.unsplash.com',
@@ -30,6 +41,7 @@ describe('test retryJsSrc state true', () => {
         retryCDN.retryJsSrc(target);
         // 断言是否添加了script标签
         const scriptElement = document.head.querySelector(`script[src="${resultUrl}"]`);
+        expect(Util.parseUrl).toHaveBeenCalledWith(target.src)
         expect(scriptElement).toBeTruthy();
     });
 
@@ -59,6 +71,15 @@ describe('test retryLinkSrc', () => {
     let retryCDN;
     const resultUrl = 'https://cdnjs.cloudflare.com/ajax/libs/element-plus/2.6.1/index.min.css'
     beforeEach(()=>{
+        Util.parseUrl.mockReturnValue({
+            protocol: "https",
+            hostname: "cdnjs.cloudflare.com",
+            pathname: '/ajax/libs/element-plus/2.6.1/index.min.css',
+            search: null,
+            hash: null,
+            origin: "https://cdnjs.cloudflare.com"
+        });
+
         retryCDN = new RetryCDN([
             'https://cdnjs.cloudflare.com',
             'https://images.unsplash.com',
@@ -71,13 +92,28 @@ describe('test retryLinkSrc', () => {
             href: 'https://wwwww/ajax/libs/element-plus/2.6.1/index.min.css'
         }
         retryCDN.retryLinkSrc(target);
+        expect(Util.parseUrl).toHaveBeenCalledWith(target.href)
         expect(Util.createLink).toHaveBeenCalledWith(resultUrl);
     });
 });
 
 describe('test retryImgSrc', () => {
     let retryCDN;
+    const errorPath = 'https://9.unsplash.com/photo-1525480122447-64809d765ec4'
+    const target = {
+        src: errorPath
+    };
+    const resultUrl = 'https://images.unsplash.com/photo-1525480122447-64809d765ec4';
     beforeEach(()=>{
+        Util.parseUrl.mockReturnValue({
+            protocol: "https",
+            hostname: "https://9.unsplash.com",
+            pathname: '/photo-1525480122447-64809d765ec4',
+            search: null,
+            hash: null,
+            origin: "https://9.unsplash.com"
+        });
+
         retryCDN = new RetryCDN([
             'https://images.unsplash.com',
             'https://cdnjs.cloudflare.com',
@@ -86,12 +122,8 @@ describe('test retryImgSrc', () => {
     })
 
     it('Switch CDN for img', () => {
-        const target = {
-            src:'https://9.unsplash.com/photo-1525480122447-64809d765ec4'
-        }
-        const resultUrl = 'https://images.unsplash.com/photo-1525480122447-64809d765ec4'
-
         retryCDN.retryImgSrc(target)
+        expect(Util.parseUrl).toHaveBeenCalledWith(errorPath)
         expect(target.src).toEqual(resultUrl)
     });
 });
@@ -153,17 +185,18 @@ describe('test hasRule', () => {
             cssRules:'cssRules',
         }
         const result = retryCDN.hasRule(styleSheets);
-        expect(styleSheets.rules).toEqual('rules')
-        expect(result).toBeTruthy()
+        expect(result).toEqual(styleSheets.rules)
     });
 
     it('no rules', () => {
         const styleSheets = {
+            get rules(){
+                throw new Error('not reles')
+            },
             cssRules:'cssRules',
-        };
+        }
         const result = retryCDN.hasRule(styleSheets);
-        expect(styleSheets.rules).toEqual('cssRules')
-        expect(result).toBeTruthy();
+        expect(result).toEqual(styleSheets.cssRules);
     });
 
     
@@ -176,23 +209,33 @@ describe('test hasRule', () => {
 
 describe('test getAllUrlArr', () => {
     let retryCDN;
+    const bgUrl = 'https://00.unsplash/premium_photo-1673603988195-1253725273e8';
     const cdnArr = [
         'https://images.unsplash.com',
         'https://cdnjs.cloudflare.com',
         'https://plus.unsplash.com',
     ]
     beforeEach(()=>{
+        Util.parseUrl.mockReturnValue({
+            protocol: "https",
+            hostname: "https://00.unsplash",
+            pathname: '/premium_photo-1673603988195-1253725273e8',
+            search: null,
+            hash: null,
+            origin: "https://00.unsplash"
+        });
+        
         retryCDN = new RetryCDN(cdnArr);
     })
 
     it('get url array', () => {
-        const bgUrl = 'https://00.unsplash/premium_photo-1673603988195-1253725273e8';
         const expectArr = [
             'https://images.unsplash.com/premium_photo-1673603988195-1253725273e8',
             'https://cdnjs.cloudflare.com/premium_photo-1673603988195-1253725273e8',
             'https://plus.unsplash.com/premium_photo-1673603988195-1253725273e8',
         ]
         const result = retryCDN.getAllUrlArr(bgUrl);
+        expect(Util.parseUrl).toHaveBeenCalledWith(bgUrl)
         expect(result).toEqual(expectArr)
     });
 });
