@@ -70,10 +70,36 @@ export default class Util {
     }
 
     /**
-     * 判断是否相对路径
-     * @param {url} String
+     * 判断是否绝对路径
+     * @param {path} String
     */
     static isAbsolutePath(path) {
-        return /^(www\.|(?:http|ftp)s?:\/\/)/.test(path);
+        // 匹配以 http、https、ftp、ftps 或双斜杠开头的路径
+        return /^(https?|ftp)s?:\/\/|(www\.)|\/\//.test(path);
+    }
+
+    /**
+     * 解析URL
+     * @param {urlString} String
+    */
+    static parseUrl(urlString){
+        const urlParts = /^(?:(https?):)?(?:\/\/([^\/?#]+))?(\/[^\?#]*)?(\?[^\#]*)?(#.*)?$/.exec(urlString);
+        if (!urlParts) {
+            throw new Error('Invalid URL');
+        }
+        const protocol = urlParts[1] || '';
+        const hostname = urlParts[2];
+        const pathname = urlParts[3] || '/';
+        const search = urlParts[4] ? `?${urlParts[4].substring(1)}` : null;
+        const hash = urlParts[5] ? urlParts[5].substring(1) : null;
+        const origin = `${protocol ? (protocol + ':') :''}//${hostname}`
+        return {
+            protocol,
+            hostname,
+            pathname,
+            search,
+            hash,
+            origin // 添加 origin 属性
+        };
     }
 }

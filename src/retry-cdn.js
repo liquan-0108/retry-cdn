@@ -45,21 +45,21 @@ export default class RetryCDN {
      * 
     */
     retryJsSrc (target){
-        const oldUrl = new URL(target.src);
+        const { pathname, search } = Util.parseUrl(target.src);
         if(target.defer || target.async){
-            const { state , num } = this.setErrorMap(this.scriptAsyncError,oldUrl.pathname)
+            const { state , num } = this.setErrorMap(this.scriptAsyncError,pathname)
             if(!state) {
                 return
             };
-            const newUrl = `${ this.domainArr[num-1] }${ oldUrl.pathname }${ oldUrl.search ? oldUrl.search : '' }`;
+            const newUrl = `${ this.domainArr[num-1] }${ pathname }${ search ? search : '' }`;
             Util.createScript(newUrl,target.defer,target.async)
         }else{
-            const { state , num } = this.setErrorMap(this.scriptError,oldUrl.pathname);
+            const { state , num } = this.setErrorMap(this.scriptError,pathname);
             // 缓存正常的cdn
             if(!state) {
                 return
             };
-            const newUrl = `${ this.domainArr[num-1] }${ oldUrl.pathname }${ oldUrl.search ? oldUrl.search : '' }`;
+            const newUrl = `${ this.domainArr[num-1] }${ pathname }${ search ? search : '' }`;
             document.write(`<script src="${newUrl}"></script>`);
         }
     }
@@ -70,12 +70,12 @@ export default class RetryCDN {
      * 
     */
     retryLinkSrc (target){
-        const oldUrl = new URL(target.href);
-        const { state , num } = this.setErrorMap(this.linkError,oldUrl.pathname)
+        const { pathname, search } = Util.parseUrl(target.href);
+        const { state , num } = this.setErrorMap(this.linkError,pathname)
         if(!state) {
             return
         };
-        const newUrl = `${ this.domainArr[num-1] }${ oldUrl.pathname }${ oldUrl.search ? oldUrl.search : '' }`;
+        const newUrl = `${ this.domainArr[num-1] }${ pathname }${ search ? search : '' }`;
         Util.createLink(newUrl)
     }
 
@@ -88,8 +88,8 @@ export default class RetryCDN {
         const { state , num } = this.setErrorMap(this.imgError,target);
         if(!state) return;
         // 拼接新url,并重试
-        const oldSrc = new URL(target.src);
-        const newUrl = `${ this.domainArr[num-1]}${oldSrc.pathname}${oldSrc.search?oldSrc.search:'' }`;
+        const { pathname, search } = Util.parseUrl(target.src);
+        const newUrl = `${ this.domainArr[num-1]}${ pathname }${ search ? search : '' }`;
         target.src = newUrl;
     }
 
@@ -169,12 +169,12 @@ export default class RetryCDN {
             // 获取第一个背景图的全部备用CDN链接，并尝试访问，拿到正常的domain
             const urlArr = this.getAllUrlArr(bgUrl)
             const result = await Util.getOneSuccUrl(urlArr)
-            const {origin : succDomain } = new URL(result);
+            const { origin : succDomain } = Util.parseUrl(result);
             // 遍历所有的CSSStyleSheet，并将异常的背景图域名替换成可以正常放访问的domain
             this.cantUseBgimg.forEach((selectArr, CSSStyleSheet) => {
                 selectArr.forEach((selectObj) => {
-                    const {pathname , search} = new URL(selectObj.bgUrl);
-                    const bgUrlDomain = `${succDomain}${pathname}${search ? search : '' }`;
+                    const { pathname , search } = Util.parseUrl(selectObj.bgUrl);
+                    const bgUrlDomain = `${ succDomain }${ pathname }${ search ? search : '' }`;
                     CSSStyleSheet.insertRule(`${selectObj.selectorText} { background-image: url(${bgUrlDomain}) !important; }`, CSSStyleSheet.rules.length);
                 })
             })
@@ -190,12 +190,10 @@ export default class RetryCDN {
     */
     hasRule(styleSheets) {
         try {
-           styleSheets.rules = styleSheets.rules ?  styleSheets.rules : styleSheets.cssRules;
-           return true;
+           return styleSheets.rules;
         } catch (error) {
             try {
-                styleSheets.rules = styleSheets.cssRules;
-                return true;
+                return styleSheets.cssRules;
             } catch (error) {
                 return null;
             }
@@ -208,7 +206,7 @@ export default class RetryCDN {
      * 
     */
     getAllUrlArr(bgUrl) {
-        const { pathname, search } = new URL(bgUrl);
+        const { pathname, search } = Util.parseUrl(bgUrl);
         var urlArr =  this.domainArr.map((domain)=>{
             return  `${domain}${pathname}${search ? search : '' }`
         })
