@@ -68,4 +68,12 @@ export default class Util {
         link.href = url;
         document.head.appendChild(link);
     }
+
+    /**
+     * 判断是否相对路径
+     * @param {url} String
+    */
+    static isAbsolutePath(path) {
+        return /^(www\.|(?:http|ftp)s?:\/\/)/.test(path);
+    }
 }

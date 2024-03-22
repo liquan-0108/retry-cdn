@@ -15,19 +15,25 @@ export default class RetryCDN {
      *  自动尝试img 和 script
     */
     init() {
+        const tagToFunction = {
+            'SCRIPT': this.retryJsSrc.bind(this),
+            'IMG': this.retryImgSrc.bind(this),
+            'LINK': this.retryLinkSrc.bind(this)
+        };
         window.addEventListener('error', (error) => {
-            const target = error.target;
-            if(target.tagName === 'SCRIPT'){
-                this.retryJsSrc(target)
-            }else if(target.tagName === 'IMG'){
-                // 给当前报错图片切换cdn
-                this.retryImgSrc(target);
-            }else if(target.tagName === 'LINK'){
-                this.retryLinkSrc(target);
+            try {
+                const target = error.target;
+                const tagName = target.tagName;
+                const retryFunction = tagToFunction[tagName];
+                if (retryFunction && Util.isAbsolutePath(target.src || target.href)) {
+                    retryFunction(target);
+                }
+            } catch (error) {
+                console.log('error',error);
             }
         },true);
         // 自动尝试css背景域名
-        window.addEventListener('DOMContentLoaded', (error) => {
+        window.addEventListener('DOMContentLoaded', () => {
             this.getAllStyleSheets()
             this.setStyle()
         })
@@ -120,15 +126,15 @@ export default class RetryCDN {
     */
     getAllStyleSheets() {
         var arrSheet = Array.from(document.styleSheets)
-        arrSheet.forEach((CSSStyleSheet)=>{
-            if(this.hasRule(CSSStyleSheet)) return
+        for (const CSSStyleSheet of arrSheet) {
+            if(!this.hasRule(CSSStyleSheet)) continue;
             try {
                 // 遍历获取css背景图，并尝试访问是否成功
                 for (let index = 0; index < CSSStyleSheet.rules.length; index++) {
                     const element = CSSStyleSheet.rules[index];
                     // 获取背景url
                     const bgUrl = Util.getBgUrl(element.style.backgroundImage)
-                    if (!bgUrl) continue 
+                    if (!bgUrl || !Util.isAbsolutePath(bgUrl)) continue 
                     // 存储CSSStyleSheet 和 背景出错的css选择器，用来之后替换背景
                     if (this.cantUseBgimg.has(CSSStyleSheet)) {
                         const CSSStyleSheetValue = this.cantUseBgimg.get(CSSStyleSheet)
@@ -148,7 +154,7 @@ export default class RetryCDN {
             } catch (error) {
                 console.log(error);
             }
-        })
+        }
     }
     /**
      * 添加样式
