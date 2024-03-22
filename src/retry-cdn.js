@@ -101,7 +101,7 @@ export default class RetryCDN {
      * **/
     setErrorMap(errorMap,target) {
         // 获取重试次数  
-        var num = errorMap.get(target) || 1;
+        var num = errorMap.get(target) || 0;
         // 重试次数是否大于备选cdn域名的个数，大于则说明重试完毕，都挂了，不在进行重试
         if(num >= this.domainArr.length){
             return {
@@ -109,12 +109,7 @@ export default class RetryCDN {
                 num
             };
         } 
-        // 是否已经存在，若存在则重试次数 + 1，否则则存入map
-        if(errorMap.has(target)){
-            errorMap.set(target,++num);
-        }else{
-            errorMap.set(target,num);
-        }
+        errorMap.set(target,++num);
         return {
             state: true,
             num
