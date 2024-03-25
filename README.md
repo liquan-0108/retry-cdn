@@ -2,10 +2,8 @@
 ## 说明
 CDN资源报错时进行CDN域名自动切换，防止页面GG
 ## 使用
-一、将retry-cdn.js文件放到 ```<head>``` 标签中，并置于所有资源之前。
-
-二、定义备用域名列表，创建RetryCDN对象
-
+将retry-cdn置于所有资源之前，定义备用域名列表，创建RetryCDN对象
+### H5
 ```javascript
    <script>
       const urlArr = [
@@ -15,7 +13,50 @@ CDN资源报错时进行CDN域名自动切换，防止页面GG
       ]
       const retry = new RetryCDN(urlArr)
     </script>
-````
+```
+
+### webpack
+main.js 中引入并实例化
+```javascript
+  import RetryCDN from 'path/retry-cdn.js';
+
+  const urlArr = [
+    'https://cdnjs.cloudflare.com',
+    'https://images.unsplash.com',
+    'https://plus.unsplash.com',
+  ]
+  new RetryCDN(urlArr)
+```
+
+### vite
+  vite开发环境使用esbuild构建（只支持esm），需要引入plugin
+
+  安装`@originjs/vite-plugin-commonjs`
+```javascript
+  npm install @originjs/vite-plugin-commonjs --save-dev
+```
+vite.config.js中进行如下配置
+```javascript
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
+
+export default defineConfig(({ mode, command }) => {
+  ...
+    plugins: [
+      viteCommonjs()
+    ],
+  ...
+})
+```
+main.js 中引入并实例化
+```javascript
+import RetryCDN from "@/utils/retry-cdn";
+  const urlArr = [
+    'https://cdnjs.cloudflare.com',
+    'https://images.unsplash.com',
+    'https://plus.unsplash.com',
+  ]
+  new RetryCDN(urlArr)
+```
 
 ## 背景图切换原理
 在DOMContentLoaded之后先取出当前第一个背景链接查看是否有效，如无效则拼备用域名全部列表，然后取出能正常访问的域名再进行统一替换
