@@ -122,11 +122,13 @@ export default class RetryCDN {
     getAllStyleSheets() {
         var arrSheet = Array.from(document.styleSheets)
         for (const CSSStyleSheet of arrSheet) {
-            if(!this.hasRule(CSSStyleSheet)) continue;
+            const styleRule = this.hasRule(CSSStyleSheet)
+            if(!styleRule) continue;
             try {
                 // 遍历获取css背景图，并尝试访问是否成功
-                for (let index = 0; index < CSSStyleSheet.rules.length; index++) {
-                    const element = CSSStyleSheet.rules[index];
+                for (let index = 0; index < styleRule.length; index++) {
+                    const element = styleRule[index];
+                    if(!element.style) continue;
                     // 获取背景url
                     const bgUrl = Util.getBgUrl(element.style.backgroundImage)
                     if (!bgUrl || !Util.isAbsolutePath(bgUrl)) continue 
@@ -175,7 +177,7 @@ export default class RetryCDN {
                 selectArr.forEach((selectObj) => {
                     const { pathname , search } = Util.parseUrl(selectObj.bgUrl);
                     const bgUrlDomain = `${ succDomain }${ pathname }${ search ? search : '' }`;
-                    CSSStyleSheet.insertRule(`${selectObj.selectorText} { background-image: url(${bgUrlDomain}) !important; }`, CSSStyleSheet.rules.length);
+                    CSSStyleSheet.insertRule(`${selectObj.selectorText} { background-image: url(${bgUrlDomain}) !important; }`, CSSStyleSheet.cssRules.length);
                 })
             })
         } catch (error) {
