@@ -1,5 +1,5 @@
-import RetryCDN from '../utils/retry-cdn.js';
-// const RetryCDN  = require('../utils/retry-cdn.js')
+import RetryCDN from '../../utils/retry-cdn.js';
+// const RetryCDN  = require('../../utils/retry-cdn.js')
 
   var urlArr = [
     'https://cdnjs.cloudflare.com',
