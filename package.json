@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack server --hot",
-    "build": "webpack --mode development",
-    "build:to-public": "webpack --mode development --output-path examples/demo-webpack/public/utils",
+    "build:to-h5": "webpack --mode development --output-path examples/demo-h5/utils/",
+    "build:to-webpack": "webpack --mode development --output-path examples/demo-webpack/utils",
+    "build:to-vite": "webpack --mode development --output-path examples/demo-vite/utils",
+    "build:dev": "npm run build:to-h5 && npm run build:to-webpack && npm run build:to-vite",
     "build:pro": "webpack --mode production",
     "test": "jest"
   },
