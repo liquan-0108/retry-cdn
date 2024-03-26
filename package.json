@@ -10,8 +10,16 @@
     "build:pro": "webpack --mode production",
     "test": "jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liquan-0108/retry-cdn.git"
+  },
   "author": "liquan <liquan_0108@163.com>",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liquan-0108/retry-cdn/issues"
+  },
+  "homepage": "https://github.com/liquan-0108/retry-cdn",
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/plugin-transform-runtime": "^7.24.1",
