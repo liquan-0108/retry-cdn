@@ -1,5 +1,4 @@
-// import RetryCDN from '../utils/retry-cdn.js';
-import RetryCDN from '../../../build/retry-cdn.js';
+import RetryCDN from '../utils/retry-cdn.js';
 // const RetryCDN  = require('../utils/retry-cdn.js')
 
   var urlArr = [
@@ -8,4 +7,4 @@ import RetryCDN from '../../../build/retry-cdn.js';
     'https://plus.unsplash.com', // 背景图正确的域名
   ]
   var retry = new RetryCDN(urlArr)
-  console.log('urlArr',retry);
+  console.log('retry',retry);

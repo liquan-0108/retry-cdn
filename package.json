@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack server --hot",
     "build": "webpack --mode development",
-    "build:to-public": "webpack --mode development --output-path demo-webpack/public/utils",
+    "build:to-public": "webpack --mode development --output-path examples/demo-webpack/public/utils",
     "build:pro": "webpack --mode production",
     "test": "jest"
   },
