@@ -17,8 +17,14 @@ CDN资源报错时进行CDN域名自动切换，防止页面GG
 
 ### webpack
 main.js 中引入并实例化
+
+安装
+
 ```javascript
-  import RetryCDN from 'path/retry-cdn.js';
+  npm install retry-cdn --save-dev
+```
+```javascript
+  import RetryCDN from 'retry-cdn';
 
   const urlArr = [
     'https://cdnjs.cloudflare.com',
