@@ -29,10 +29,11 @@ main.js 中引入并实例化
 ```
 
 ### vite
-  vite开发环境使用esbuild构建（只支持esm），需要引入plugin
+  vite开发环境使用esbuild构建（只支持esm），需要另外引入安装`@originjs/vite-plugin-commonjs`
 
-  安装`@originjs/vite-plugin-commonjs`
+  
 ```javascript
+  npm install retry-cdn --save-dev
   npm install @originjs/vite-plugin-commonjs --save-dev
 ```
 vite.config.js中进行如下配置
@@ -49,7 +50,7 @@ export default defineConfig(({ mode, command }) => {
 ```
 main.js 中引入并实例化
 ```javascript
-import RetryCDN from "@/utils/retry-cdn";
+import RetryCDN from "retry-cdn";
   const urlArr = [
     'https://cdnjs.cloudflare.com',
     'https://images.unsplash.com',
