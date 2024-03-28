@@ -2,7 +2,7 @@
   "name": "retry-cdn",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/retry-cdn.js",
   "scripts": {
     "dev": "webpack server --hot",
     "build:to-h5": "webpack --mode development --output-path examples/demo-h5/utils/",

@@ -1,0 +1,8 @@
+**/.*
+coverage/
+examples/
+jest.*.js
+node_modules/
+src/
+test/
+webpack.*.js
