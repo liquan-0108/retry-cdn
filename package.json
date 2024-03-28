@@ -1,6 +1,6 @@
 {
   "name": "retry-cdn",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "build/retry-cdn.js",
   "scripts": {
