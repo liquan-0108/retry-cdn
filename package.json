@@ -1,7 +1,7 @@
 {
   "name": "retry-cdn",
   "version": "0.1.1",
-  "description": "",
+  "description": "Automatically switch the domain name when error",
   "main": "build/retry-cdn.js",
   "scripts": {
     "dev": "webpack server --hot",
