@@ -1,6 +1,15 @@
 {
   "name": "retry-cdn",
   "version": "0.1.1",
+  "keywords": [
+    "cdn",
+    "资源",
+    "错误域名切换",
+    "自动重新加载",
+    "备份域名",
+    "CDN容灾",
+    "自动切换"
+  ],
   "description": "Automatically switch the domain name when error",
   "main": "build/retry-cdn.js",
   "scripts": {
